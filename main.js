@@ -97,6 +97,11 @@ function createIframe(parent, html) {
   iframe.contentDocument.close();
 }
 
+function renderTemplate(sel, ctx) {
+  var templateString = $(sel).text();
+  return _.template(templateString)(ctx);
+}
+
 function doChallenge(originalHTML) {
   var split = splitCSS(originalHTML);
   var whatToBreak;
@@ -115,23 +120,16 @@ function doChallenge(originalHTML) {
   $("#css").append(css);
   $('.not-broken', css).on('click', function() {
     numTries++;
-    window.alert('Nope, that is not broken. Try again!');
+    $("#message").html(renderTemplate('#lose-message')).hide().fadeIn();
   });
   $('.broken', css).on('click', function() {
-    var time = ((Date.now() - startTime) / 1000).toFixed(1);
-    var tryText;
-
-    if (numTries == 0) {
-      tryText = 'on your first try';
-    } else {
-      tryText = 'after ' + numTries + ' attempts';
-    }
-
+    numTries++;
     $("#css").text(split.css);
     createIframe($("#broken").empty(), originalHTML);
-    window.alert('Yay, you found the broken CSS in ' +
-                 time + ' seconds ' + tryText + '! Reload the page ' +
-                 'to fix another.');
+    $("#message").html(renderTemplate("#win-message", {
+      numTries: numTries,
+      time: ((Date.now() - startTime) / 1000).toFixed(1)
+    })).hide().fadeIn();
   });
 
   createIframe($("#broken"), replaceCSS(originalHTML, css.text()));

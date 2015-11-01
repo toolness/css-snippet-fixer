@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <style>
+.lose {
+  color: red;
+}
+
+.win {
+  color: green;
+}
+
 #css {
   white-space: pre;
   font-family: monospace;
@@ -13,10 +21,28 @@
 <p>Can you help fix this broken CSS?</p>
 <p>Click or tap on the error in the CSS below.</p>
 <div id="css"></div>
+<div id="message"></div>
 <p>This is what the page looks like with the above CSS:</p>
 <div id="broken"></div>
 <p>This is what the page <em>should</em> look like:</p>
 <div id="fixed"></div>
+<script type="text/template" id="lose-message">
+<div class="lose">
+Nope, that is not broken. Try again!
+</div>
+</script>
+<script type="text/template" id="win-message">
+<div class="win">
+Yay, you found the broken CSS in <%- time %> seconds
+<% if (numTries == 1) { %>
+  on your first try!
+<% } else { %>
+  after <%- numTries %> attempts!
+<% } %>
+
+Reload the page to fix another.
+</div>
+</script>
 <script src="vendor/jquery.js"></script>
 <script src="vendor/underscore.js"></script>
 <script src="main.js"></script>
