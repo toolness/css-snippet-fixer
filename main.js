@@ -7,6 +7,15 @@ var breakers = {
   colonToSemicolon: simpleReplaceBreaker(/:/g, ';'),
   openingBraceMissing: simpleReplaceBreaker(/ {/g, '  '),
   oToA: simpleReplaceBreaker(/o/g, 'a'),
+  missingSemicolon: function(css) {
+    // We want to ignore semicolons at the end of rules, since
+    // removing them doesn't actually break the CSS (it's just bad
+    // style).
+    var result = findRandomOccurrence(/\;(?!\n})/g, css);
+
+    if (!result) return null;
+    return [result.index, 1, ' '];
+  }
 };
 
 function simpleReplaceBreaker(regex, replacement) {
@@ -102,8 +111,12 @@ function renderTemplate(sel, ctx) {
   return _.template(templateString)(ctx);
 }
 
+function normalizeNewlines(text) {
+  return text.replace(/\r\n/g, '\n');
+}
+
 function doChallenge(originalHTML) {
-  var split = splitCSS(originalHTML);
+  var split = splitCSS(normalizeNewlines(originalHTML));
   var whatToBreak;
 
   if (getQueryArg('breaker')) {
