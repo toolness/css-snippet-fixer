@@ -144,10 +144,12 @@ function doChallenge(originalHTML) {
   $("#css").append(css);
   $('.not-broken', css).on('click', function() {
     numTries++;
+    updateTotals(-1);
     $("#message").html(renderTemplate('#lose-message')).hide().fadeIn();
   });
   $('.broken', css).on('click', function() {
     numTries++;
+    updateTotals(2 + challenge);
     $("#css").text(split.css);
     createIframe($("#broken").empty(), originalHTML);
     $("#message").html(renderTemplate("#win-message", {
@@ -160,9 +162,33 @@ function doChallenge(originalHTML) {
   createIframe($("#fixed"), originalHTML);
 }
 
+function updateTotals(score) {
+  var totalScore = parseInt(window.sessionStorage['totalScore']);
+  var startTime = parseInt(window.sessionStorage['startTime']);
+
+  if (isNaN(totalScore)) {
+    totalScore = 0;
+  }
+
+  if (isNaN(startTime)) {
+    startTime = Date.now();
+    window.sessionStorage['startTime'] = startTime;
+  }
+
+  totalScore += (score || 0);
+  window.sessionStorage['totalScore'] = totalScore;
+
+  $("#totals").html(renderTemplate('#totals-template', {
+    totalTime: Math.floor((Date.now() - startTime) / 1000) + 's',
+    totalScore: totalScore
+  }));
+}
+
 $(function() {
   if (isNaN(challenge) || challenge <= 0 || challenge > NUM_CHALLENGES) {
     challenge = 1;
   }
+  updateTotals();
+  window.setInterval(updateTotals, 1000);
   $.get("challenges/00" + challenge + ".html", doChallenge);
 });

@@ -12,6 +12,15 @@ a {
   color: inherit;
 }
 
+#totals {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 4px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+}
+
 #message {
   margin: 10px 0;
 }
@@ -37,6 +46,7 @@ a {
 <p><strong>Click or tap</strong> on the error in the CSS below.</p>
 <div id="css"></div>
 <div id="message"></div>
+<div id="totals"></div>
 <h2>Clues</h2>
 <p>This is what the page looks like with the above CSS:</p>
 <div id="broken"></div>
@@ -47,6 +57,9 @@ a {
 <div class="lose">
 Nope, that is not broken. Try again!
 </div>
+</script>
+<script type="text/template" id="totals-template">
+Total score: <%- totalScore %> Total time: <%- totalTime %>
 </script>
 <script type="text/template" id="win-message">
 <div class="win">
