@@ -57,7 +57,10 @@ Yay, you found the broken CSS in <%- time %> seconds
   after <%- numTries %> attempts!
 <% } %>
 
-Reload the page for another mystery.
+<p><a href="">Try another mystery.</a></p>
+<% if (challenge < NUM_CHALLENGES) { %>
+<p><a href="?challenge=<%- challenge+1 %>">Try a <strong>harder</strong> mystery.</a></p>
+<% } %>
 </div>
 </script>
 <script src="vendor/jquery.js"></script>

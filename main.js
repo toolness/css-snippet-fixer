@@ -1,6 +1,9 @@
 var startTime, numTries;
 
+var NUM_CHALLENGES = 4;
 var CSS_REGEX = /<style>([\S\s]*)<\/style>/;
+
+var challenge = parseInt(getQueryArg('challenge') || '1');
 
 var breakers = {
   hyphenToUnderscore: simpleReplaceBreaker(/-/g, '_'),
@@ -158,6 +161,8 @@ function doChallenge(originalHTML) {
 }
 
 $(function() {
-  var challenge = getQueryArg('challenge') || '001';
-  $.get("challenges/" + challenge + ".html", doChallenge);
+  if (isNaN(challenge) || challenge <= 0 || challenge > NUM_CHALLENGES) {
+    challenge = 1;
+  }
+  $.get("challenges/00" + challenge + ".html", doChallenge);
 });
