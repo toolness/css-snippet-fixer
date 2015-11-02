@@ -7,6 +7,14 @@ var breakers = {
   colonToSemicolon: simpleReplaceBreaker(/:/g, ';'),
   openingBraceMissing: simpleReplaceBreaker(/ {/g, '  '),
   oToA: simpleReplaceBreaker(/o/g, 'a'),
+  closingBraceMissing: function(css) {
+    // We want to ignore closing braces at the end of stylesheets, since
+    // removing them doesn't actually break the CSS.
+    var result = findRandomOccurrence(/}\n\n/g, css);
+
+    if (!result) return null;
+    return [result.index, 3, ' \n \n'];
+  },
   missingSemicolon: function(css) {
     // We want to ignore semicolons at the end of rules, since
     // removing them doesn't actually break the CSS (it's just bad
