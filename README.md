@@ -1,5 +1,6 @@
 This is a simple mystery-solving game for CSS learners to develop
-their debugging skills.
+their debugging skills. It is designed to be usable on devices without
+physical keyboards (e.g. tablets and cell phones).
 
 CSS snippets are randomly "broken" in one of a variety of ways based on
 observation of CSS learners in [ScriptEd][] classes
