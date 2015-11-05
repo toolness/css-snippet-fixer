@@ -142,14 +142,16 @@ function doChallenge(originalHTML) {
   startTime = Date.now();
 
   $("#css").append(css);
-  $('.not-broken', css).on('click', function() {
+  $('.not-broken', css).on('click', function(e) {
     numTries++;
     updateTotals(-1);
+    drawCircle(e.pageX, e.pageY, 'miss');
     $("#message").html(renderTemplate('#lose-message')).hide().fadeIn();
   });
-  $('.broken', css).on('click', function() {
+  $('.broken', css).on('click', function(e) {
     numTries++;
     updateTotals(2 + challenge);
+    drawCircle(e.pageX, e.pageY, 'hit');
     $("#css").text(split.css);
     createIframe($("#broken").empty(), originalHTML);
     $("#message").html(renderTemplate("#win-message", {
@@ -160,6 +162,17 @@ function doChallenge(originalHTML) {
 
   createIframe($("#broken"), replaceCSS(originalHTML, css.text()));
   createIframe($("#fixed"), originalHTML);
+}
+
+function drawCircle(x, y, className) {
+  var circle = $('<div class="circle"></div>')
+    .addClass(className)
+    .css({
+      top: y + 'px',
+      left: x + 'px'
+    })
+    .appendTo('body');
+  return circle;
 }
 
 function updateTotals(score) {
