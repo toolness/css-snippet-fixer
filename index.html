@@ -6,10 +6,13 @@
 <style>
 html, body {
   font-family: 'Fira Sans', sans-serif;
+  margin: 0;
+  background-color: #f0f0f0;
 }
 
-body {
-  margin-top: 2rem;
+.content {
+  background: white;
+  padding: 2rem 1rem 1rem 1rem;
 }
 
 a {
@@ -61,12 +64,19 @@ header.lose {
   font-size: 2rem;
   cursor: pointer;
 }
+
+footer {
+  background-color: #f0f0f0;
+  padding: 1rem;
+  text-align: right;
+}
 </style>
 <title>It&rsquo;s a CSS mystery!</title>
 <header>
   <div id="message"></div>
   <div id="totals"></div>
 </header>
+<div class="content">
 <h1>It&rsquo;s a CSS mystery!</h1>
 <p>Can you help fix this broken CSS?</p>
 <p><strong>Click or tap</strong> on the error in the CSS below.</p>
@@ -77,12 +87,22 @@ header.lose {
 <p>This is what the page <em>should</em> look like:</p>
 <div id="fixed"></div>
 <p>You can also use your <a href="http://www.wickedlysmart.com/hfjsconsole/">browser console</a> for more clues.</p>
+</div>
+<footer>
+  <a href="http://github.com/toolness/css-snippet-fixer">GitHub</a> |
+  <a href="#" id="reset">Reset</a>
+</footer>
+
+<!-- Templates (See http://underscorejs.org/#template) -->
+
 <script type="text/template" id="lose-message">
 Nope, that is not broken. Try again!
 </script>
+
 <script type="text/template" id="totals-template">
 Total score: <%- totalScore %> Total time: <%- totalTime %>
 </script>
+
 <script type="text/template" id="win-message">
 Yay, you found the broken CSS in <%- time %> seconds
 <% if (numTries == 1) { %>
@@ -96,6 +116,9 @@ Yay, you found the broken CSS in <%- time %> seconds
 <p><a href="?challenge=<%- challenge+1 %>">Try a <strong>harder</strong> mystery.</a></p>
 <% } %>
 </script>
+
+<!-- Scripts -->
+
 <script src="vendor/jquery.js"></script>
 <script src="vendor/underscore.js"></script>
 <script src="main.js"></script>

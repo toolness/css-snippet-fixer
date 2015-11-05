@@ -206,4 +206,10 @@ $(function() {
   updateTotals();
   window.setInterval(updateTotals, 1000);
   $.get("challenges/00" + challenge + ".html", doChallenge);
+  $("#reset").click(function(e) {
+    e.preventDefault();
+    delete sessionStorage['totalScore'];
+    delete sessionStorage['startTime'];
+    window.location = window.location.pathname;
+  });
 });
