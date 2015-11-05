@@ -5,40 +5,6 @@ var CSS_REGEX = /<style>([\S\s]*)<\/style>/;
 
 var challenge = parseInt(getQueryArg('challenge') || '1');
 
-var breakers = {
-  hyphenToUnderscore: simpleReplaceBreaker(/-/g, '_'),
-  colonToSemicolon: simpleReplaceBreaker(/:/g, ';'),
-  openingBraceMissing: simpleReplaceBreaker(/ {/g, '  '),
-  oToA: simpleReplaceBreaker(/o/g, 'a'),
-  closingBraceMissing: function(css) {
-    // We want to ignore closing braces at the end of stylesheets, since
-    // removing them doesn't actually break the CSS.
-    var result = findRandomOccurrence(/}\n\n/g, css);
-
-    if (!result) return null;
-    return [result.index, 3, ' \n \n'];
-  },
-  missingSemicolon: function(css) {
-    // We want to ignore semicolons at the end of rules, since
-    // removing them doesn't actually break the CSS (it's just bad
-    // style).
-    var result = findRandomOccurrence(/\;(?!\n})/g, css);
-
-    if (!result) return null;
-    return [result.index, 1, ' '];
-  }
-};
-
-function simpleReplaceBreaker(regex, replacement) {
-  return function(css) {
-    var result = findRandomOccurrence(regex, css);
-
-    if (!result) return null;
-
-    return [result.index, result[0].length, replacement];
-  }
-}
-
 // http://stackoverflow.com/a/901144
 function getQueryArg(name) {
   name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -47,21 +13,6 @@ function getQueryArg(name) {
   return results === null
     ? ""
     : decodeURIComponent(results[1].replace(/\+/g, " "));
-}
-
-function randomlyBreakCSS(css) {
-  var MAX_ATTEMPTS = 1000;
-  var breakerNames = Object.keys(breakers);
-  var whatToBreak;
-
-  for (var i = 0; i < MAX_ATTEMPTS; i++) {
-    whatToBreak = breakers[_.sample(breakerNames)](css);
-    if (whatToBreak !== null)
-      return whatToBreak;
-  }
-
-  throw new Error("Unable to break CSS after " + MAX_ATTEMPTS +
-                  " attempts");
 }
 
 function createBrokenCSS(css, whatToBreak) {
@@ -75,24 +26,6 @@ function createBrokenCSS(css, whatToBreak) {
   ending.text(css.slice(whatToBreak[0] + whatToBreak[1]));
 
   return span;
-}
-
-function findAllOccurrences(regex, text) {
-  var results = [];
-  var result;
-
-  while ((result = regex.exec(text)) !== null) {
-    results.push(result);
-  }
-
-  return results;
-}
-
-function findRandomOccurrence(regex, text) {
-  var results = findAllOccurrences(regex, text);
-
-  if (results.length == 0) return null;
-  return _.sample(results);
 }
 
 function splitCSS(html) {
