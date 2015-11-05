@@ -146,6 +146,7 @@ function doChallenge(originalHTML) {
     numTries++;
     updateTotals(-1);
     drawCircle(e.pageX, e.pageY, 'miss');
+    $('header').attr('class', 'lose');
     $("#message").html(renderTemplate('#lose-message')).hide().fadeIn();
   });
   $('.broken', css).on('click', function(e) {
@@ -154,6 +155,7 @@ function doChallenge(originalHTML) {
     drawCircle(e.pageX, e.pageY, 'hit');
     $("#css").text(split.css);
     createIframe($("#broken").empty(), originalHTML);
+    $('header').attr('class', 'win');
     $("#message").html(renderTemplate("#win-message", {
       numTries: numTries,
       time: ((Date.now() - startTime) / 1000).toFixed(1)

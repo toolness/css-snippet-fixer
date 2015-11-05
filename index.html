@@ -8,6 +8,10 @@ html, body {
   font-family: 'Fira Sans', sans-serif;
 }
 
+body {
+  margin-top: 2rem;
+}
+
 a {
   color: inherit;
 }
@@ -30,25 +34,25 @@ a {
   background-color: rgba(255, 0, 0, 0.25);
 }
 
-#totals {
-  position: absolute;
+header {
+  position: fixed;
   top: 0;
+  left: 0;
   right: 0;
+  width: 100%;
   padding: 4px;
+  text-align: center;
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
+  box-sizing: border-box;
 }
 
-#message {
-  margin: 10px 0;
+header.win {
+  background-color: rgba(0, 100, 0, 0.8);
 }
 
-.lose {
-  color: red;
-}
-
-.win {
-  color: green;
+header.lose {
+  background-color: rgba(100, 0, 0, 0.8);
 }
 
 #css {
@@ -59,12 +63,14 @@ a {
 }
 </style>
 <title>It&rsquo;s a CSS mystery!</title>
+<header>
+  <div id="message"></div>
+  <div id="totals"></div>
+</header>
 <h1>It&rsquo;s a CSS mystery!</h1>
 <p>Can you help fix this broken CSS?</p>
 <p><strong>Click or tap</strong> on the error in the CSS below.</p>
 <div id="css"></div>
-<div id="message"></div>
-<div id="totals"></div>
 <h2>Clues</h2>
 <p>This is what the page looks like with the above CSS:</p>
 <div id="broken"></div>
@@ -72,15 +78,12 @@ a {
 <div id="fixed"></div>
 <p>You can also use your <a href="http://www.wickedlysmart.com/hfjsconsole/">browser console</a> for more clues.</p>
 <script type="text/template" id="lose-message">
-<div class="lose">
 Nope, that is not broken. Try again!
-</div>
 </script>
 <script type="text/template" id="totals-template">
 Total score: <%- totalScore %> Total time: <%- totalTime %>
 </script>
 <script type="text/template" id="win-message">
-<div class="win">
 Yay, you found the broken CSS in <%- time %> seconds
 <% if (numTries == 1) { %>
   on your first try!
@@ -92,7 +95,6 @@ Yay, you found the broken CSS in <%- time %> seconds
 <% if (challenge < NUM_CHALLENGES) { %>
 <p><a href="?challenge=<%- challenge+1 %>">Try a <strong>harder</strong> mystery.</a></p>
 <% } %>
-</div>
 </script>
 <script src="vendor/jquery.js"></script>
 <script src="vendor/underscore.js"></script>
