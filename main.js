@@ -81,6 +81,7 @@ function doChallenge(originalHTML) {
     drawCircle(e.pageX, e.pageY, 'miss');
     $('header').attr('class', 'lose');
     $("#message").html(renderTemplate('#lose-message')).hide().fadeIn();
+    playAudio('#lose-sound');
   });
   $('.broken', css).on('click', function(e) {
     numTries++;
@@ -93,10 +94,17 @@ function doChallenge(originalHTML) {
       numTries: numTries,
       time: ((Date.now() - startTime) / 1000).toFixed(1)
     })).hide().fadeIn();
+    playAudio('#win-sound');
   });
 
   createIframe($("#broken"), replaceCSS(originalHTML, css.text()));
   createIframe($("#fixed"), originalHTML);
+}
+
+function playAudio(sel) {
+  try {
+    $(sel)[0].play();
+  } catch (e) {}
 }
 
 function drawCircle(x, y, className) {
